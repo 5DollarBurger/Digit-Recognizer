@@ -1,24 +1,15 @@
 import numpy as np
 from sklearn.utils import shuffle
+from CoreClasses.ANNBaseClass import ANNBaseClass
 import os
 import json
 
 PWD = os.path.abspath(os.path.dirname(__file__))
 
 
-class ANN0Layer:
+class ANN0Layer(ANNBaseClass):
     def __init__(self):
         self.confDict = json.load(fp=open(f"{PWD}/conf.json", "r"))
-
-    def _getEncodedY(self, Y):
-        """
-        Onehotencodes class series to represent class probabilities
-        """
-        N = len(Y)
-        YEnc = np.zeros(shape=(N, self.K))
-        for i in range(N):
-            YEnc[i, Y[i]] = 1
-        return YEnc
 
     def _getCost(self, y, t):
         """
@@ -38,12 +29,6 @@ class ANN0Layer:
         Calculate loss gradient w.r.t. b2
         """
         return (t - y).sum(axis=0)
-
-    def _getNumBatch(self, B):
-        """
-        Calculate number of batches based on batch size
-        """
-        return int(np.ceil(self.N / B))
 
     def getClassProbs(self, X):
         """
@@ -68,11 +53,11 @@ class ANN0Layer:
         self.K = len(np.unique(Ytrain))
         if B is None:
             B = self.N
-        numBatch = self._getNumBatch(B=B)
+        numBatch = self._getNumBatch(N=self.N, B=B)
 
         # convert Ytrain and Ytest to (N x K) matrices of indicator variables
-        YtrainEnc = self._getEncodedY(Y=Ytrain) # describe as probabilities
-        YtestEnc = self._getEncodedY(Y=Ytest)
+        YtrainEnc = self._getEncodedY(Y=Ytrain, K=self.K) # describe as probabilities
+        YtestEnc = self._getEncodedY(Y=Ytest, K=self.K)
 
         # initialize params
         self.W2 = np.random.randn(self.D, self.K) / np.sqrt(self.D)

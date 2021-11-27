@@ -1,0 +1,19 @@
+{
+  "defaultBatchConf": {
+    "41000": {
+      "learnRate": 0.00004,
+      "reg": 0.01,
+      "iter": 30
+    },
+    "500": {
+      "learnRate": 0.00016,
+      "reg": 0.0,
+      "iter": 50
+    },
+    "1": {
+      "learnRate": 0.001,
+      "reg": 0.0,
+      "iter": 50
+    }
+  }
+}

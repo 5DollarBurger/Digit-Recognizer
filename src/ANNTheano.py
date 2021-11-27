@@ -58,6 +58,9 @@ class ANNTheano(ANNBaseClass):
         self.predFunc = theano.function(inputs=[thX], outputs=thY)
 
     def train(self, Xtrain, Ytrain, iter=30, B=None):
+        """
+        Perform batch gradient decent to optimize params in predict function
+        """
         if B is None:
             B = self.N
         numBatch = self._getNumBatch(N=self.N, B=B)
@@ -81,6 +84,9 @@ class ANNTheano(ANNBaseClass):
         return LLtrain
 
     def predict(self, X):
+        """
+        Predict class using argmax
+        """
         Y = self.predFunc(X)
         return Y
 
